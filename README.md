@@ -41,9 +41,6 @@ A tool that connects [Google Ads](https://ads.google.com/) with Claude AI, allow
 flowchart TB
     User(User) -->|Interacts with| Claude
     Claude(Claude AI Assistant) -->|Makes requests to| MCP[Google Ads MCP Server]
-    User -->|Can also use| Cursor[Cursor AI Code Editor]
-    Cursor -->|Makes requests to| MCP
-    
     subgraph "MCP Server"
         FastMCP[FastMCP Server] 
         Tools[Available Tools]
@@ -80,8 +77,6 @@ flowchart TB
     GoogleAdsAPI -->|Returns| AdData[Advertising Data]
     AdData -->|Analyzed by| Claude
     AdData -->|Visualized by| Claude
-    AdData -->|Can be used by| Cursor
-    
     Credentials -->|Authorizes| GoogleAdsAPI
     
     subgraph "Configuration"
@@ -90,8 +85,7 @@ flowchart TB
         
         EnvVars -->|Configures| MCP
         ConfigFiles -->|Configures| Claude
-        ConfigFiles -->|Configures| Cursor
-    end
+end
 ```
 
 ## Available Tools
@@ -376,28 +370,9 @@ The application will automatically load these values from the `.env` file when i
 
 #### Using Direct Environment Variables
 
-You can also set environment variables directly in your system or in the configuration files for Claude or Cursor:
+You can also set environment variables directly in your system or in the configuration file for Claude:
 
 ##### For Claude Desktop
-
-```json
-{
-  "mcpServers": {
-    "googleAdsServer": {
-      "command": "/FULL/PATH/TO/mcp-google-ads-main/.venv/bin/python",
-      "args": ["/FULL/PATH/TO/mcp-google-ads-main/google_ads_server.py"],
-      "env": {
-        "GOOGLE_ADS_AUTH_TYPE": "oauth",
-        "GOOGLE_ADS_CREDENTIALS_PATH": "/FULL/PATH/TO/mcp-google-ads-main/credentials.json",
-        "GOOGLE_ADS_DEVELOPER_TOKEN": "YOUR_DEVELOPER_TOKEN_HERE",
-        "GOOGLE_ADS_LOGIN_CUSTOMER_ID": "YOUR_MANAGER_ACCOUNT_ID_HERE"
-      }
-    }
-  }
-}
-```
-
-##### For Cursor
 
 ```json
 {
@@ -474,66 +449,7 @@ Examples:
 
 6. When Claude opens, you should now see Google Ads tools available in the tools section
 
-### 5a. Connect to Cursor (AI Code Editor)
-
-Cursor is an AI-powered code editor that can be enhanced with MCP tools. You can integrate this Google Ads MCP tool with Cursor to analyze advertising data directly within your coding environment.
-
-#### Setting Up Cursor Integration
-
-1. If you haven't already, download and install [Cursor](https://cursor.sh/) 
-2. Create a Cursor MCP configuration file:
-
-   **For project-specific configuration:**
-   Create a `.cursor/mcp.json` file in your project directory.
-
-   **For global configuration (available in all projects):**
-   Create a `~/.cursor/mcp.json` file in your home directory.
-
-3. Add the following configuration to your MCP config file:
-
-   ```json
-   {
-     "mcpServers": {
-       "googleAdsServer": {
-         "command": "/FULL/PATH/TO/mcp-google-ads-main/.venv/bin/python",
-         "args": ["/FULL/PATH/TO/mcp-google-ads-main/google_ads_server.py"],
-         "env": {
-           "GOOGLE_ADS_CREDENTIALS_PATH": "/FULL/PATH/TO/mcp-google-ads-main/service_account_credentials.json",
-           "GOOGLE_ADS_DEVELOPER_TOKEN": "YOUR_DEVELOPER_TOKEN_HERE",
-           "GOOGLE_ADS_LOGIN_CUSTOMER_ID": "YOUR_MANAGER_ACCOUNT_ID_HERE"
-         }
-       }
-     }
-   }
-   ```
-
-   **Important:** Replace all paths and values with the actual information for your account, just like in the Claude Desktop configuration.
-
-4. Restart Cursor or reload the workspace to apply the new configuration.
-
-5. The Google Ads MCP will now appear in Cursor's "Available Tools" section and can be used by Cursor's AI agent when needed.
-
-#### Using Google Ads MCP in Cursor
-
-When working in Cursor, you can ask the AI agent to use the Google Ads tools directly. For example:
-
-- "Use the Google Ads MCP to list all my accounts and show me which ones have the highest spend."
-- "Can you analyze my campaign performance for the last 30 days using the Google Ads MCP?"
-- "Run a GAQL query to find my top converting keywords using the Google Ads tools."
-
-Cursor will prompt you to approve the tool usage (unless you've enabled Yolo mode) and then display the results directly in the chat interface.
-
-#### Cursor-Specific Features
-
-When using the Google Ads MCP with Cursor, you can:
-
-1. **Combine Code and Ads Analysis**: Ask Cursor to analyze your marketing-related code alongside actual campaign performance data.
-2. **Generate Data Visualizations**: Request charts and visualizations of your ad performance directly in your development environment.
-3. **Implement Recommendations**: Let Cursor suggest code improvements based on your actual advertising data.
-
-This integration is particularly valuable for developers working on marketing automation, analytics dashboards, or e-commerce applications where ad performance directly impacts code decisions.
-
-### 6. Start Analyzing Your Advertising Data!
+### 7. Start Analyzing Your Advertising Data!
 
 Now you can ask Claude questions about your Google Ads data! Claude can not only retrieve the data but also analyze it, explain trends, and create visualizations to help you understand your advertising performance better.
 
@@ -636,7 +552,7 @@ Remember that most issues have been encountered by others before, and there's us
 
 ### Testing Your Setup
 
-The repository includes test files that let you verify your Google Ads API connection is working correctly before using it with Claude or Cursor.
+The repository includes test files that let you verify your Google Ads API connection is working correctly before using it with Claude.
 
 #### Testing Basic Functionality
 
@@ -684,9 +600,9 @@ To specifically test the authentication and token refresh mechanisms:
    - Test the customer ID formatting function
    - For OAuth tokens, attempt to refresh the token and verify it worked
 
-The token refresh test can help confirm that both OAuth and service account credentials are properly configured before using the server with Claude or Cursor.
-   
-If all tests complete successfully, your setup is working correctly and ready to use with Claude or Cursor.
+The token refresh test can help confirm that both OAuth and service account credentials are properly configured before using the server with Claude.
+
+If all tests complete successfully, your setup is working correctly and ready to use with Claude.
 
 ---
 
